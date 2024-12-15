@@ -1,12 +1,18 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.clear();
+    setTimeout(() =>
+    navigate("/login")
+    , 1000);
+  };
   return (
-    <nav className="bg-amber-950 text-white shadow-md">
-      <div className="container mx-auto flex justify-between items-center p-4">
+    <nav className="text-white shadow-md bg-amber-950">
+      <div className="container flex items-center justify-between p-4 mx-auto">
         {/* Logo */}
         <Link to="/" className="text-2xl font-bold">
           FoodGallery
@@ -14,12 +20,12 @@ export default function Navbar() {
 
         {/* Hamburger Icon */}
         <button
-          className="sm:hidden text-white focus:outline-none"
+          className="text-white sm:hidden focus:outline-none"
           onClick={() => setIsOpen(!isOpen)}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
+            className="w-6 h-6"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -48,14 +54,15 @@ export default function Navbar() {
           <Link
             to="/about"
             className="block mt-2 sm:mt-0 sm:inline-block hover:text-gray-300"
+            onClick={handleLogout}
           >
-            About
+            Log Out
           </Link>
           <Link
-            to="/login"
+            to="/profile"
             className="block mt-2 sm:mt-0 sm:inline-block hover:text-gray-300"
           >
-           Login
+            Profile
           </Link>
         </div>
       </div>

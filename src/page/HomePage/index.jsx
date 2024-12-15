@@ -2,6 +2,7 @@ import axios from "axios";
 import Navbar from "../../components/Navbar";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { use } from "react";
 
 const HomePage = () => {
   const [Data, setData] = useState([]);
@@ -24,14 +25,23 @@ const HomePage = () => {
 
   useEffect(() => {
     getData();
+  }, []);
+  
+  useEffect(() => {
+    getData();
   }, [skip]);
 
   const totalPages = Math.ceil(total / limit);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 
   const handleNext = () => {
     if (pagination < totalPages) {
       setPagination(pagination + 1);
       setSkip(skip + limit);
+      scrollToTop();
     }
   };
 
@@ -39,6 +49,7 @@ const HomePage = () => {
     if (pagination > 1) {
       setPagination(pagination - 1);
       setSkip(skip - limit);
+      scrollToTop();
     }
   };
   return (
@@ -74,7 +85,7 @@ const HomePage = () => {
                     <strong>Difficulty:</strong> {item.difficulty}
                   </p>
                   <Link to={`/detail/${item.id}`}>
-                    <button className=" p-2 text-center text-white transition duration-300 bg-amber-600 rounded-md hover:bg-amber-700">
+                    <button className="p-2 text-center text-white transition duration-300 rounded-md bg-amber-600 hover:bg-amber-700">
                       Detail Recipe
                     </button>
                   </Link>
@@ -83,11 +94,11 @@ const HomePage = () => {
             );
           })}
         </div>
-        <div className="flex justify-center mt-6 gap-5">
+        <div className="flex justify-center gap-5 mt-6">
           <button
             onClick={handlePrev}
             disabled={pagination === 1}
-            className="p-2 text-center text-white transition duration-300 bg-gray-600 rounded-md hover:bg-gray-700 w-20"
+            className="w-20 p-2 text-center text-white transition duration-300 bg-gray-600 rounded-md hover:bg-gray-700"
           >
             Previous
           </button>
@@ -95,7 +106,7 @@ const HomePage = () => {
           <button
             onClick={handleNext}
             disabled={pagination === totalPages}
-            className="p-2 text-center text-white transition duration-300 bg-gray-600 rounded-md hover:bg-gray-700 w-20"
+            className="w-20 p-2 text-center text-white transition duration-300 bg-gray-600 rounded-md hover:bg-gray-700"
           >
             Next
           </button>
